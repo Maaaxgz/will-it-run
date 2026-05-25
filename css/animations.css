@@ -1,0 +1,101 @@
+/* ============================================================
+   animations.css — keyframes y transiciones
+   Filosofía NieR: apariciones limpias, sin efectos neon
+   ============================================================ */
+
+/* ── Entrada de página ───────────────────────────────────── */
+.app-wrapper {
+  animation: pageIn 0.4s ease both;
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Cards con entrada escalonada */
+.card:nth-child(1) { animation: cardIn 0.4s 0.05s ease both; }
+.card:nth-child(2) { animation: cardIn 0.4s 0.12s ease both; }
+.card:nth-child(3) { animation: cardIn 0.4s 0.19s ease both; }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Título — fade simple, sin flicker exagerado ─────────── */
+.site-title {
+  animation: titleIn 0.5s 0.1s ease both;
+}
+
+@keyframes titleIn {
+  from { opacity: 0; letter-spacing: 0.2em; }
+  to   { opacity: 1; letter-spacing: 0.08em; }
+}
+
+/* ── Dropdown ─────────────────────────────────────────────── */
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Fade + slide up (result card, info strip) ───────────── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Resultado: items del quality grid ───────────────────── */
+.quality-grid .quality-item {
+  animation: itemReveal 0.3s ease both;
+}
+
+.quality-grid .quality-item:nth-child(1) { animation-delay: 0.04s; }
+.quality-grid .quality-item:nth-child(2) { animation-delay: 0.1s;  }
+.quality-grid .quality-item:nth-child(3) { animation-delay: 0.16s; }
+
+@keyframes itemReveal {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Scan line en result card (versión NieR: sutil) ──────── */
+.result-card.visible::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--border-active);
+  animation: scanLine 0.8s ease forwards;
+  pointer-events: none;
+}
+
+@keyframes scanLine {
+  from { opacity: 0.8; top: 0; }
+  to   { opacity: 0;   top: 100%; }
+}
+
+/* ── Dots animados en loading ────────────────────────────── */
+.loading-msg::after {
+  content: '...';
+  display: inline-block;
+  animation: loadingDots 1.2s steps(4, end) infinite;
+  width: 1.5ch;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+@keyframes loadingDots {
+  0%  { width: 0; }
+  25% { width: 0.5ch; }
+  50% { width: 1ch; }
+  75% { width: 1.5ch; }
+}
+
+/* ── Reduce motion ───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

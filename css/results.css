@@ -1,0 +1,232 @@
+/* =============================================
+   RESULTS — Tarjeta de resultados, badges, tabla
+   ============================================= */
+
+/* --- Contenedor resultado (oculto por defecto) --- */
+.result-card {
+  display: none;
+}
+.result-card.visible {
+  display: block;
+}
+
+/* --- Header del resultado --- */
+.result-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.result-game-name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+}
+
+/* --- Badges de veredicto --- */
+.result-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.badge-yes {
+  background: rgba(57, 255, 20, 0.1);
+  color: var(--green);
+  border: 0.5px solid rgba(57, 255, 20, 0.3);
+  box-shadow: 0 0 12px rgba(57, 255, 20, 0.15);
+}
+
+.badge-warn {
+  background: rgba(255, 179, 0, 0.1);
+  color: var(--amber);
+  border: 0.5px solid rgba(255, 179, 0, 0.3);
+  box-shadow: 0 0 12px rgba(255, 179, 0, 0.15);
+}
+
+.badge-no {
+  background: rgba(255, 23, 68, 0.1);
+  color: var(--red);
+  border: 0.5px solid rgba(255, 23, 68, 0.3);
+  box-shadow: 0 0 12px rgba(255, 23, 68, 0.15);
+}
+
+/* --- Grid de componentes (GPU, CPU, RAM) --- */
+.quality-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.quality-item {
+  background: rgba(0, 0, 0, 0.3);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 0.75rem;
+  text-align: center;
+}
+
+.quality-item .q-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.quality-item .q-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  word-break: break-word;
+  line-height: 1.3;
+}
+
+/* --- Colores de estado de componente --- */
+.q-ok   { color: var(--green); }
+.q-warn { color: var(--amber); }
+.q-no   { color: var(--red); }
+.q-dim  { color: var(--text-secondary); }
+
+/* --- Calidad estimada (bloque ancho) --- */
+.quality-level-block {
+  background: rgba(0, 0, 0, 0.3);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.quality-level-block .ql-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.quality-level-block .ql-value {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+/* --- Sección de requisitos detectados --- */
+.req-section-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+  margin-top: 1rem;
+}
+
+.req-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.req-block {
+  background: rgba(0, 0, 0, 0.25);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.85rem;
+}
+
+.req-block-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.req-block-row {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  padding: 2px 0;
+}
+
+.req-block-row span {
+  color: var(--text-muted);
+  margin-right: 4px;
+}
+
+/* --- Sección de upgrades sugeridos --- */
+.upgrade-section {
+  margin-top: 1rem;
+  border-top: 0.5px solid var(--border-subtle);
+  padding-top: 1rem;
+}
+
+.upgrade-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 0.75rem;
+}
+
+.upgrade-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 0.6rem 0;
+  border-bottom: 0.5px solid var(--border-subtle);
+  font-size: 13px;
+}
+
+.upgrade-item:last-child { border-bottom: none; }
+
+.upgrade-component {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  min-width: 44px;
+  padding-top: 1px;
+}
+
+.upgrade-suggestion {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* --- Responsive --- */
+@media (max-width: 520px) {
+  .quality-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .req-grid {
+    grid-template-columns: 1fr;
+  }
+}

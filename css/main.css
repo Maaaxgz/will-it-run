@@ -1,0 +1,307 @@
+/* ============================================================
+   main.css — variables, reset, base layout
+   Estética inspirada en NieR: Automata — versión fría (azul-pizarra)
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+/* ══════════════════════════════════════════════════════════
+   TOKENS — Modo oscuro (default)
+   ══════════════════════════════════════════════════════════ */
+:root.dark {
+  /* Backgrounds */
+  --bg-base:        #1a1e2a;
+  --bg-surface:     #1f2435;
+  --bg-elevated:    #252c3d;
+  --bg-selected:    #2e3650;
+
+  /* Borders */
+  --border-dim:     rgba(160, 175, 210, 0.18);
+  --border-mid:     rgba(160, 175, 210, 0.35);
+  --border-active:  rgba(200, 215, 255, 0.75);
+
+  /* Accent — blanco frío; mínimo color */
+  --accent:         #c8d4f0;
+  --accent-dim:     rgba(200, 212, 240, 0.1);
+
+  /* Estado — apagados, coherentes con paleta monocromática */
+  --green:          #7ec8a0;
+  --green-bg:       rgba(126, 200, 160, 0.08);
+  --green-border:   rgba(126, 200, 160, 0.3);
+
+  --amber:          #c8aa6e;
+  --amber-bg:       rgba(200, 170, 110, 0.08);
+  --amber-border:   rgba(200, 170, 110, 0.3);
+
+  --red:            #c87e7e;
+  --red-bg:         rgba(200, 126, 126, 0.08);
+  --red-border:     rgba(200, 126, 126, 0.3);
+
+  /* Text */
+  --text-primary:   #d8e0f0;
+  --text-secondary: rgba(180, 195, 225, 0.7);
+  --text-muted:     rgba(140, 158, 195, 0.5);
+
+  /* Typography — una sola fuente, como NieR */
+  --font-mono:      'Share Tech Mono', 'Courier New', monospace;
+
+  /* Geometry — sin border-radius exagerado */
+  --radius-sm:      2px;
+  --radius-md:      3px;
+  --radius-lg:      4px;
+  --radius-xl:      4px;
+
+  /* Card */
+  --card-shadow:    0 2px 12px rgba(0, 0, 0, 0.4);
+  --glass-border:   1px solid var(--border-dim);
+  --glass-blur:     none;   /* sin glassmorphism */
+
+  /* Transición de tema */
+  --theme-transition: background-color 0.25s ease, color 0.25s ease,
+                      border-color 0.25s ease;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TOKENS — Modo claro
+   ══════════════════════════════════════════════════════════ */
+:root {
+  --bg-base:        #dde0e8;
+  --bg-surface:     #e4e7ee;
+  --bg-elevated:    #eceef4;
+  --bg-selected:    #c8ccda;
+
+  --border-dim:     rgba(80, 90, 120, 0.2);
+  --border-mid:     rgba(80, 90, 120, 0.38);
+  --border-active:  rgba(40, 50, 90, 0.75);
+
+  --accent:         #2e3650;
+  --accent-dim:     rgba(46, 54, 80, 0.1);
+
+  --green:          #3a7a55;
+  --green-bg:       rgba(58, 122, 85, 0.08);
+  --green-border:   rgba(58, 122, 85, 0.3);
+
+  --amber:          #7a5e20;
+  --amber-bg:       rgba(122, 94, 32, 0.08);
+  --amber-border:   rgba(122, 94, 32, 0.3);
+
+  --red:            #8a3535;
+  --red-bg:         rgba(138, 53, 53, 0.08);
+  --red-border:     rgba(138, 53, 53, 0.3);
+
+  --text-primary:   #1a1e2a;
+  --text-secondary: rgba(40, 50, 80, 0.75);
+  --text-muted:     rgba(30, 35, 51, 0.5);
+
+  --card-shadow:    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Reset ───────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+/* ── Body & fondo ────────────────────────────────────────── */
+body {
+  font-family: var(--font-mono);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+  transition: var(--theme-transition);
+}
+
+/* Líneas diagonales de fondo — detalle NieR */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      transparent,
+      transparent 48px,
+      rgba(128, 140, 180, 0.08) 48px,
+      rgba(128, 140, 180, 0.08) 50px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Patrón de dots en borde superior — detalle NieR */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background-image: radial-gradient(circle, var(--border-mid) 1px, transparent 1px);
+  background-size: 10px 6px;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── Layout ──────────────────────────────────────────────── */
+.app-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 6rem 1.25rem 4rem;
+}
+
+/* ── Header con toggle ───────────────────────────────────── */
+.site-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+}
+
+.site-header-text { flex: 1; }
+
+/* ── Tipografía ──────────────────────────────────────────── */
+.site-title {
+  font-family: var(--font-mono);
+  font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+  font-weight: normal;          /* NieR no usa bold exagerado */
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  transition: var(--theme-transition);
+}
+
+.site-subtitle {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Section labels ──────────────────────────────────────── */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Línea divisoria al lado del label — detalle NieR */
+.section-label::before {
+  content: '■';
+  font-size: 7px;
+  color: var(--accent);
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-dim);
+}
+
+/* ── Inputs ──────────────────────────────────────────────── */
+input[type="text"],
+input[type="number"] {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 9px 11px;
+  outline: none;
+  transition: var(--theme-transition), border-color 0.15s;
+  /* -webkit-appearance: none; */
+}
+
+input::placeholder {
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+input:focus {
+  border-color: var(--border-active);
+  background: var(--bg-selected);
+  box-shadow: none; /* sin glow neon */
+}
+
+/* ocultar flechas en number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
+/* input[type="number"] { -moz-appearance: textfield; } */
+
+/* ── Field label ─────────────────────────────────────────── */
+.field-label {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  margin-bottom: 5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.field-label .optional {
+  color: var(--text-muted);
+  font-size: 10px;
+  margin-left: 4px;
+  opacity: 0.7;
+}
+
+/* ── Mensajes de estado ──────────────────────────────────── */
+.loading-msg {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  padding: 8px 0;
+}
+
+.error-msg {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--red);
+  letter-spacing: 0.04em;
+  padding: 8px 0;
+}
+
+/* ── Theme toggle button ─────────────────────────────────── */
+.btn-theme {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: var(--theme-transition), border-color 0.15s;
+  white-space: nowrap;
+  margin-top: 4px;
+}
+
+.btn-theme:hover {
+  border-color: var(--border-active);
+  color: var(--text-primary);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 0; }
