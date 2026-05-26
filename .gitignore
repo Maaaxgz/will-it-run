@@ -1,0 +1,18 @@
+# Variables de entorno locales (NUNCA subir al repo)
+.env
+.env.local
+.env.development.local
+.env.production.local
+
+# Carpetas de dependencias
+node_modules/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Carpeta de build de Vercel
+.vercel
