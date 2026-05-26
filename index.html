@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Verifica si tu PC puede correr un videojuego con tus componentes actuales." />
-  <title>¿Puede tu PC correrlo?</title>
+  <meta name="description" content="Check if your PC can run a video game based on your current hardware." />
+  <title>Will it run?</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="css/main.css" />
@@ -18,10 +21,17 @@
     <!-- Header -->
     <div class="site-header">
       <div class="site-header-text">
-        <h1 class="site-title">¿Puede tu PC correrlo?</h1>
-        <p class="site-subtitle">// ingresa tus componentes · busca un juego · verifica</p>
+        <h1 class="site-title" id="site-title">Will it run?</h1>
+        <p class="site-subtitle" id="site-subtitle">// ingresa tus componentes · busca un juego · verifica</p>
       </div>
-      <button class="btn-theme" id="theme-toggle" aria-label="Cambiar tema">■ Claro</button>
+      <!-- Theme + language controls -->
+      <div style="display:flex; flex-direction:column; align-items:flex-end; gap:6px;">
+        <button class="btn-theme" id="theme-toggle" aria-label="Toggle theme">■ Oscuro</button>
+        <div class="lang-controls" aria-label="Language selector">
+          <button class="btn-lang btn-lang--active" data-lang="es">ES</button>
+          <button class="btn-lang" data-lang="en">EN</button>
+        </div>
+      </div>
     </div>
 
     <!-- Card 1 — Hardware inputs -->
@@ -33,7 +43,7 @@
           <label class="field-label" for="gpu-input">GPU (tarjeta gráfica)</label>
           <div class="autocomplete-wrap">
             <input type="text" id="gpu-input" placeholder="Ej: RTX 3060" autocomplete="off" />
-            <div class="dropdown" id="gpu-dropdown" role="listbox" aria-label="Sugerencias de GPU"></div>
+            <div class="dropdown" id="gpu-dropdown" role="listbox" aria-label="GPU suggestions"></div>
           </div>
         </div>
 
@@ -41,7 +51,7 @@
           <label class="field-label" for="cpu-input">CPU (procesador)</label>
           <div class="autocomplete-wrap">
             <input type="text" id="cpu-input" placeholder="Ej: i5-12400F" autocomplete="off" />
-            <div class="dropdown" id="cpu-dropdown" role="listbox" aria-label="Sugerencias de CPU"></div>
+            <div class="dropdown" id="cpu-dropdown" role="listbox" aria-label="CPU suggestions"></div>
           </div>
         </div>
 
@@ -60,12 +70,12 @@
       </div>
     </section>
 
-    <!-- Card 2 — Game search -->
-    <section class="card" aria-labelledby="game-label">
+    <!-- Card 2 — Game search; card--overflow allows dropdown to escape card bounds -->
+    <section class="card card--overflow" aria-labelledby="game-label">
       <p class="section-label" id="game-label">Buscar juego</p>
       <div class="game-search-wrap">
         <input type="text" id="game-input" placeholder="Escribe el nombre del juego…" autocomplete="off" />
-        <div class="game-dropdown" id="game-dropdown" role="listbox" aria-label="Resultados de búsqueda"></div>
+        <div class="game-dropdown" id="game-dropdown" role="listbox" aria-label="Game search results"></div>
       </div>
       <div id="game-status"></div>
       <div id="selected-game-display" style="display:none"></div>
@@ -85,7 +95,8 @@
 
   </main>
 
-  <!-- Scripts: data first, then API, then logic, then init -->
+  <!-- i18n first, then data, api, logic, init -->
+  <script src="js/i18n.js"></script>
   <script src="js/data.js"></script>
   <script src="js/api.js"></script>
   <script src="js/search.js"></script>

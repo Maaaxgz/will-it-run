@@ -6,63 +6,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
 
 /* ══════════════════════════════════════════════════════════
-   TOKENS — Modo oscuro (default)
-   ══════════════════════════════════════════════════════════ */
-:root.dark {
-  /* Backgrounds */
-  --bg-base:        #1a1e2a;
-  --bg-surface:     #1f2435;
-  --bg-elevated:    #252c3d;
-  --bg-selected:    #2e3650;
-
-  /* Borders */
-  --border-dim:     rgba(160, 175, 210, 0.18);
-  --border-mid:     rgba(160, 175, 210, 0.35);
-  --border-active:  rgba(200, 215, 255, 0.75);
-
-  /* Accent — blanco frío; mínimo color */
-  --accent:         #c8d4f0;
-  --accent-dim:     rgba(200, 212, 240, 0.1);
-
-  /* Estado — apagados, coherentes con paleta monocromática */
-  --green:          #7ec8a0;
-  --green-bg:       rgba(126, 200, 160, 0.08);
-  --green-border:   rgba(126, 200, 160, 0.3);
-
-  --amber:          #c8aa6e;
-  --amber-bg:       rgba(200, 170, 110, 0.08);
-  --amber-border:   rgba(200, 170, 110, 0.3);
-
-  --red:            #c87e7e;
-  --red-bg:         rgba(200, 126, 126, 0.08);
-  --red-border:     rgba(200, 126, 126, 0.3);
-
-  /* Text */
-  --text-primary:   #d8e0f0;
-  --text-secondary: rgba(180, 195, 225, 0.7);
-  --text-muted:     rgba(140, 158, 195, 0.5);
-
-  /* Typography — una sola fuente, como NieR */
-  --font-mono:      'Share Tech Mono', 'Courier New', monospace;
-
-  /* Geometry — sin border-radius exagerado */
-  --radius-sm:      2px;
-  --radius-md:      3px;
-  --radius-lg:      4px;
-  --radius-xl:      4px;
-
-  /* Card */
-  --card-shadow:    0 2px 12px rgba(0, 0, 0, 0.4);
-  --glass-border:   1px solid var(--border-dim);
-  --glass-blur:     none;   /* sin glassmorphism */
-
-  /* Transición de tema */
-  --theme-transition: background-color 0.25s ease, color 0.25s ease,
-                      border-color 0.25s ease;
-}
-
-/* ══════════════════════════════════════════════════════════
-   TOKENS — Modo claro
+   TOKENS — Modo claro (default)
    ══════════════════════════════════════════════════════════ */
 :root {
   --bg-base:        #dde0e8;
@@ -91,9 +35,60 @@
 
   --text-primary:   #1a1e2a;
   --text-secondary: rgba(40, 50, 80, 0.75);
-  --text-muted:     rgba(30, 35, 51, 0.5);
+  --text-muted:     rgba(60, 70, 100, 0.5);
 
+  /* Typography — una sola fuente, como NieR */
+  --font-mono:      'Share Tech Mono', 'Courier New', monospace;
+
+  /* Geometry — sin border-radius exagerado */
+  --radius-sm:      2px;
+  --radius-md:      3px;
+  --radius-lg:      4px;
+  --radius-xl:      4px;
+
+  /* Card */
   --card-shadow:    0 2px 8px rgba(0, 0, 0, 0.1);
+  --glass-border:   1px solid var(--border-dim);
+  --glass-blur:     none;
+
+  /* Transición de tema */
+  --theme-transition: background-color 0.25s ease, color 0.25s ease,
+                      border-color 0.25s ease;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TOKENS — Modo oscuro
+   ══════════════════════════════════════════════════════════ */
+:root.dark {
+  --bg-base:        #1a1e2a;
+  --bg-surface:     #1f2435;
+  --bg-elevated:    #252c3d;
+  --bg-selected:    #2e3650;
+
+  --border-dim:     rgba(160, 175, 210, 0.18);
+  --border-mid:     rgba(160, 175, 210, 0.35);
+  --border-active:  rgba(200, 215, 255, 0.75);
+
+  --accent:         #c8d4f0;
+  --accent-dim:     rgba(200, 212, 240, 0.1);
+
+  --green:          #7ec8a0;
+  --green-bg:       rgba(126, 200, 160, 0.08);
+  --green-border:   rgba(126, 200, 160, 0.3);
+
+  --amber:          #c8aa6e;
+  --amber-bg:       rgba(200, 170, 110, 0.08);
+  --amber-border:   rgba(200, 170, 110, 0.3);
+
+  --red:            #c87e7e;
+  --red-bg:         rgba(200, 126, 126, 0.08);
+  --red-border:     rgba(200, 126, 126, 0.3);
+
+  --text-primary:   #d8e0f0;
+  --text-secondary: rgba(180, 195, 225, 0.7);
+  --text-muted:     rgba(140, 158, 195, 0.5);
+
+  --card-shadow:    0 2px 12px rgba(0, 0, 0, 0.4);
 }
 
 /* ── Reset ───────────────────────────────────────────────── */
@@ -108,6 +103,8 @@ html { scroll-behavior: smooth; }
 /* ── Body & fondo ────────────────────────────────────────── */
 body {
   font-family: var(--font-mono);
+  font-weight: 400; /* fuerza peso consistente entre modos */
+  font-synthesis: none; /* evita que el browser genere bold/italic falsos */
   background-color: var(--bg-base);
   color: var(--text-primary);
   min-height: 100vh;
@@ -126,8 +123,8 @@ body::before {
       135deg,
       transparent,
       transparent 48px,
-      rgba(128, 140, 180, 0.08) 48px,
-      rgba(128, 140, 180, 0.08) 50px
+      rgba(128, 140, 180, 0.04) 48px,
+      rgba(128, 140, 180, 0.04) 49px
     );
   pointer-events: none;
   z-index: 0;
@@ -140,7 +137,7 @@ body::after {
   top: 0;
   left: 0;
   right: 0;
-  height: 12px;
+  height: 6px;
   background-image: radial-gradient(circle, var(--border-mid) 1px, transparent 1px);
   background-size: 10px 6px;
   pointer-events: none;
@@ -153,7 +150,7 @@ body::after {
   z-index: 1;
   max-width: 720px;
   margin: 0 auto;
-  padding: 6rem 1.25rem 4rem;
+  padding: 3rem 1.25rem 4rem;
 }
 
 /* ── Header con toggle ───────────────────────────────────── */
@@ -226,7 +223,7 @@ input[type="number"] {
   padding: 9px 11px;
   outline: none;
   transition: var(--theme-transition), border-color 0.15s;
-  /* -webkit-appearance: none; */
+  -webkit-appearance: none;
 }
 
 input::placeholder {
@@ -243,7 +240,7 @@ input:focus {
 /* ocultar flechas en number */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
-/* input[type="number"] { -moz-appearance: textfield; } */
+input[type="number"] { -moz-appearance: textfield; }
 
 /* ── Field label ─────────────────────────────────────────── */
 .field-label {

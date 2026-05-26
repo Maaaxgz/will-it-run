@@ -49,7 +49,6 @@ function setupAutocomplete(inputId, dropdownId, db) {
     dropdown.style.display = 'block';
 
     dropdown.querySelectorAll('.dropdown-item').forEach(el => {
-      // mousedown fires before blur so the click registers correctly
       el.addEventListener('mousedown', e => {
         input.value = e.currentTarget.dataset.name;
         dropdown.style.display = 'none';
@@ -76,8 +75,7 @@ gameInput.addEventListener('input', () => {
     gameStatus.innerHTML = '';
     return;
   }
-  gameStatus.innerHTML = '<p class="loading-msg">Buscando juegos</p>';
-  // Debounce: wait 400ms after last keystroke before hitting API
+  gameStatus.innerHTML = `<p class="loading-msg">${t().searching}</p>`;
   gameSearchTimeout = setTimeout(() => searchGames(q), 400);
 });
 
@@ -89,7 +87,7 @@ async function searchGames(query) {
 
     if (!results.length) {
       gameDropdown.style.display = 'none';
-      gameStatus.innerHTML = '<p class="loading-msg">No se encontraron juegos para ese nombre.</p>';
+      gameStatus.innerHTML = `<p class="loading-msg">${t().noResults}</p>`;
       return;
     }
 
@@ -105,14 +103,13 @@ async function searchGames(query) {
       el.addEventListener('mousedown', () => selectGame(results[i]));
     });
   } catch (e) {
-    gameStatus.innerHTML = '<p class="error-msg">Error al conectar con la API. Verifica tu API key.</p>';
+    gameStatus.innerHTML = `<p class="error-msg">${t().apiError}</p>`;
     gameDropdown.style.display = 'none';
   }
 }
 
 /**
  * Fetches full game detail on selection to get PC requirements.
- * Shows loading state while the second API call completes.
  * @param {Object} game - lightweight game object from search results
  */
 async function selectGame(game) {
@@ -124,7 +121,7 @@ async function selectGame(game) {
 
   const disp = document.getElementById('selected-game-display');
   disp.style.display = 'block';
-  disp.innerHTML = `<div class="selected-game-info loading">Cargando requisitos de ${game.name}…</div>`;
+  disp.innerHTML = `<div class="selected-game-info loading">${t().loadingReqs(game.name)}</div>`;
 
   try {
     const detail = await fetchGameDetail(game.id);
@@ -132,15 +129,15 @@ async function selectGame(game) {
     const hasReqs = pc && pc.requirements && (pc.requirements.minimum || pc.requirements.recommended);
 
     if (!hasReqs) {
-      disp.innerHTML = `<div class="selected-game-info no-reqs">${game.name} — sin requisitos de PC en la base de datos</div>`;
-      return; // button stays disabled
+      disp.innerHTML = `<div class="selected-game-info no-reqs">${t().noReqsFound(game.name)}</div>`;
+      return;
     }
 
     selectedGame = detail;
-    disp.innerHTML = `<div class="selected-game-info">✓ ${game.name} — requisitos de PC disponibles</div>`;
+    disp.innerHTML = `<div class="selected-game-info">${t().reqsAvailable(game.name)}</div>`;
     checkBtn.disabled = false;
   } catch (e) {
-    disp.innerHTML = `<div class="selected-game-info no-reqs">Error al obtener detalles del juego.</div>`;
+    disp.innerHTML = `<div class="selected-game-info no-reqs">${t().detailError}</div>`;
   }
 }
 

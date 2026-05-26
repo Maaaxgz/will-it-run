@@ -49,36 +49,29 @@ function findBestHardwareScore(reqText, db) {
 
 /* ── Main function ────────────────────────────────────────── */
 
-/** Called by the "Verificar compatibilidad" button */
+/** Called by the check button */
 function checkCompatibility() {
   if (!selectedGame) return;
 
+  const s        = t(); // active language strings
   const gpuName  = document.getElementById('gpu-input').value.trim();
   const cpuName  = document.getElementById('cpu-input').value.trim();
   const ram      = parseFloat(document.getElementById('ram-input').value) || 0;
-  const userVram = parseFloat(document.getElementById('vram-input').value) || 0;
 
-  /* Pull the PC platform entry from the detailed game object */
   const pc     = selectedGame.platforms.find(p => p.platform.id === 4);
-  const minReq = pc.requirements.minimum    || '';
+  const minReq = pc.requirements.minimum     || '';
   const recReq = pc.requirements.recommended || '';
 
-  /* Parse RAM requirements; fall back to common defaults */
   const reqRamMin = parseRAM(minReq) || 8;
   const reqRamRec = parseRAM(recReq) || 16;
 
-  /* Match user hardware against DB */
   const userGpu = getScore(gpuName, GPU_DB);
   const userCpu = getScore(cpuName, CPU_DB);
+  const minGpu  = findBestHardwareScore(minReq, GPU_DB);
+  const recGpu  = findBestHardwareScore(recReq, GPU_DB);
+  const minCpu  = findBestHardwareScore(minReq, CPU_DB);
+  const recCpu  = findBestHardwareScore(recReq, CPU_DB);
 
-  /* Match hardware mentioned in requirement strings */
-  const minGpu = findBestHardwareScore(minReq, GPU_DB);
-  const recGpu = findBestHardwareScore(recReq, GPU_DB);
-  const minCpu = findBestHardwareScore(minReq, CPU_DB);
-  const recCpu = findBestHardwareScore(recReq, CPU_DB);
-
-  /* ── Evaluate each component ── */
-  // If we can't find the required component in the text, we give the user benefit of the doubt
   const gpuOkMin = userGpu && minGpu ? userGpu.score >= minGpu.score : !!userGpu;
   const gpuOkRec = userGpu && recGpu ? userGpu.score >= recGpu.score : false;
   const cpuOkMin = userCpu && minCpu ? userCpu.score >= minCpu.score : !!userCpu;
@@ -86,23 +79,22 @@ function checkCompatibility() {
   const ramOkMin = ram >= reqRamMin;
   const ramOkRec = ram >= reqRamRec;
 
-  const issues   = [!gpuOkMin && 'gpu', !cpuOkMin && 'cpu', !ramOkMin && 'ram'].filter(Boolean);
-  const canPlay  = issues.length === 0;
+  const canPlay  = gpuOkMin && cpuOkMin && ramOkMin;
   const meetsRec = gpuOkRec && cpuOkRec && ramOkRec;
 
-  /* ── Estimated quality level ── */
-  let qualityLevel = 'Sin datos suficientes';
+  /* ── Quality level ── */
+  let qualityLevel = s.qualityNoData;
   let qualityClass = '';
   if (canPlay) {
     if (meetsRec && userGpu && recGpu && userGpu.score >= recGpu.score * 1.3) {
-      qualityLevel = 'Ultra / Alto';   qualityClass = 'q-ok';
+      qualityLevel = s.qualityUltra; qualityClass = 'q-ok';
     } else if (meetsRec) {
-      qualityLevel = 'Alto / Medio-Alto'; qualityClass = 'q-ok';
+      qualityLevel = s.qualityHigh;  qualityClass = 'q-ok';
     } else {
-      qualityLevel = 'Bajo / Medio';   qualityClass = 'q-warn';
+      qualityLevel = s.qualityLow;   qualityClass = 'q-warn';
     }
   } else {
-    qualityLevel = 'No puede correrlo'; qualityClass = 'q-no';
+    qualityLevel = s.qualityCannotRun; qualityClass = 'q-no';
   }
 
   /* ── Badge ── */
@@ -114,52 +106,48 @@ function checkCompatibility() {
   gameName.textContent = selectedGame.name;
 
   if (!canPlay) {
-    badge.textContent = 'No compatible';
+    badge.textContent = s.badgeNo;
     badge.className   = 'result-badge badge-no';
   } else if (meetsRec) {
-    badge.textContent = 'Totalmente compatible';
+    badge.textContent = s.badgeYes;
     badge.className   = 'result-badge badge-yes';
   } else {
-    badge.textContent = 'Compatible (ajustes necesarios)';
+    badge.textContent = s.badgeWarn;
     badge.className   = 'result-badge badge-warn';
   }
 
-  /* ── Build result HTML ── */
-  const gpuStatusClass = gpuOkMin ? 'q-status-ok' : 'q-status-no';
-  const cpuStatusClass = cpuOkMin ? 'q-status-ok' : 'q-status-no';
-  const ramStatusClass = ramOkMin ? 'q-status-ok' : 'q-status-no';
-
+  /* ── Result HTML ── */
   let html = `
     <div class="quality-grid">
-      <div class="quality-item ${gpuStatusClass}">
+      <div class="quality-item ${gpuOkMin ? 'q-status-ok' : 'q-status-no'}">
         <div class="q-label">GPU</div>
         <div class="q-value ${gpuOkMin ? 'q-ok' : 'q-no'}">${userGpu ? userGpu.name : gpuName || '—'}</div>
       </div>
-      <div class="quality-item ${cpuStatusClass}">
+      <div class="quality-item ${cpuOkMin ? 'q-status-ok' : 'q-status-no'}">
         <div class="q-label">CPU</div>
         <div class="q-value ${cpuOkMin ? 'q-ok' : 'q-no'}">${userCpu ? userCpu.name : cpuName || '—'}</div>
       </div>
-      <div class="quality-item ${ramStatusClass}">
+      <div class="quality-item ${ramOkMin ? 'q-status-ok' : 'q-status-no'}">
         <div class="q-label">RAM</div>
         <div class="q-value ${ramOkMin ? 'q-ok' : 'q-no'}">${ram > 0 ? ram + ' GB' : '—'}</div>
       </div>
     </div>
 
     <div class="quality-level-block">
-      <span class="ql-label">Calidad estimada</span>
+      <span class="ql-label">${s.estimatedQuality}</span>
       <span class="ql-value ${qualityClass}">${qualityLevel}</span>
     </div>
 
-    <p class="req-section-title">Requisitos detectados del juego</p>
+    <p class="req-section-title">${s.detectedReqs}</p>
     <div class="req-grid">
       <div class="req-box">
-        <div class="req-box-title">Mínimos</div>
+        <div class="req-box-title">${s.reqMinimum}</div>
         ${minGpu ? `<div>GPU: ${minGpu.name}</div>` : ''}
         ${minCpu ? `<div>CPU: ${minCpu.name}</div>` : ''}
         <div>RAM: ${reqRamMin} GB</div>
       </div>
       <div class="req-box">
-        <div class="req-box-title">Recomendados</div>
+        <div class="req-box-title">${s.reqRecommended}</div>
         ${recGpu ? `<div>GPU: ${recGpu.name}</div>` : ''}
         ${recCpu ? `<div>CPU: ${recCpu.name}</div>` : ''}
         <div>RAM: ${reqRamRec} GB</div>
@@ -169,7 +157,7 @@ function checkCompatibility() {
 
   /* ── Upgrade suggestions ── */
   if (!canPlay || !meetsRec) {
-    html += `<div class="upgrade-section"><p class="upgrade-title">// Componentes a actualizar</p>`;
+    html += `<div class="upgrade-section"><p class="upgrade-title">${s.upgradeTitle}</p>`;
 
     if (!gpuOkMin || (!gpuOkRec && canPlay)) {
       const tier = (!userGpu || userGpu.score < 35) ? 'low' : userGpu.score < 55 ? 'mid' : 'high';
@@ -188,16 +176,15 @@ function checkCompatibility() {
     if (!ramOkMin) {
       html += `<div class="upgrade-item">
         <span class="upgrade-component">RAM</span>
-        <span class="upgrade-suggestion">Necesitas al menos ${reqRamMin} GB. Recomendado: ${reqRamRec} GB.</span>
+        <span class="upgrade-suggestion">${s.upgradeRam(reqRamMin, reqRamRec)}</span>
       </div>`;
     }
     html += `</div>`;
   }
 
   body.innerHTML = html;
-  // Force animation replay by removing and re-adding the class
   card.classList.remove('visible');
-  void card.offsetWidth; // reflow
+  void card.offsetWidth;
   card.classList.add('visible');
   card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
