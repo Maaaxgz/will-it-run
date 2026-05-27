@@ -49,8 +49,13 @@ const TRANSLATIONS = {
     qualityNoData:    'Sin datos suficientes',
     qualityUltra:     'Ultra / Alto',
     qualityHigh:      'Alto / Medio-Alto',
-    qualityLow:       'Bajo / Medio',
+    qualityMedium:    'Medio',
+    qualityLow:       'Bajo',
     qualityCannotRun: 'No puede correrlo',
+
+    /* Warnings */
+    bottleneckWarning: 'El CPU puede limitar el rendimiento de tu GPU en este juego.',
+    vramWarning:      (has, req) => `Tu GPU tiene ${has} GB de VRAM — el juego requiere ${req} GB mínimo.`,
 
     /* Result sections */
     estimatedQuality: 'Calidad estimada',
@@ -107,8 +112,13 @@ const TRANSLATIONS = {
     qualityNoData:    'Not enough data',
     qualityUltra:     'Ultra / High',
     qualityHigh:      'High / Medium-High',
-    qualityLow:       'Low / Medium',
+    qualityMedium:    'Medium',
+    qualityLow:       'Low',
     qualityCannotRun: 'Cannot run it',
+
+    /* Warnings */
+    bottleneckWarning: 'Your CPU may limit GPU performance in this game.',
+    vramWarning:      (has, req) => `Your GPU has ${has} GB VRAM — the game requires at least ${req} GB.`,
 
     /* Result sections */
     estimatedQuality: 'Estimated quality',
