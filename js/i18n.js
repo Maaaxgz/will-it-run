@@ -59,6 +59,7 @@ const TRANSLATIONS = {
     reqRecommended:   'Recomendados',
     upgradeTitle:     '// Componentes a actualizar',
     upgradeRam:       (min, rec) => `Necesitas al menos ${min} GB. Recomendado: ${rec} GB.`,
+    footerCredit:     'Hecho por Maaaxgz',
   },
 
   en: {
@@ -116,6 +117,7 @@ const TRANSLATIONS = {
     reqRecommended:   'Recommended',
     upgradeTitle:     '// Components to upgrade',
     upgradeRam:       (min, rec) => `You need at least ${min} GB. Recommended: ${rec} GB.`,
+    footerCredit:     'Made by Maaaxgz',
   },
 };
 
@@ -161,4 +163,6 @@ function applyTranslations() {
   document.querySelectorAll('.btn-lang').forEach(btn => {
     btn.classList.toggle('btn-lang--active', btn.dataset.lang === currentLang);
   });
+
+  document.getElementById('footer-link').textContent = s.footerCredit;
 }

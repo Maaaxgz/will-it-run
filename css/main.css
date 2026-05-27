@@ -223,7 +223,7 @@ input[type="number"] {
   padding: 9px 11px;
   outline: none;
   transition: var(--theme-transition), border-color 0.15s;
-  /* -webkit-appearance: none; */
+  -webkit-appearance: none;
 }
 
 input::placeholder {
@@ -240,7 +240,7 @@ input:focus {
 /* ocultar flechas en number */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
-/* input[type="number"] { -moz-appearance: textfield; } */
+input[type="number"] { -moz-appearance: textfield; }
 
 /* ── Field label ─────────────────────────────────────────── */
 .field-label {
@@ -302,3 +302,26 @@ input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
 ::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 0; }
+
+/* ── Footer ──────────────────────────────────────────────── */
+.site-footer {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  /* border-top: 1px solid var(--border-dim); */
+  margin-top: 1rem;
+  transition: var(--theme-transition);
+}
+
+.site-footer a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.site-footer a:hover {
+  color: var(--text-primary);
+}
