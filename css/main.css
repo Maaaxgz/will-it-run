@@ -223,7 +223,7 @@ input[type="number"] {
   padding: 9px 11px;
   outline: none;
   transition: var(--theme-transition), border-color 0.15s;
-  -webkit-appearance: none;
+  /* -webkit-appearance: none; */
 }
 
 input::placeholder {
@@ -240,7 +240,7 @@ input:focus {
 /* ocultar flechas en number */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; }
-input[type="number"] { -moz-appearance: textfield; }
+/* input[type="number"] { -moz-appearance: textfield; } */
 
 /* ── Field label ─────────────────────────────────────────── */
 .field-label {
