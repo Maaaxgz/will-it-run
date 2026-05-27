@@ -19,6 +19,8 @@
    el dropdown no quede cortado por el borde de la card */
 .card--overflow {
   overflow: visible;
+  position: relative;
+  z-index: 1000;
 }
 
 /* Línea superior de acento — detalle NieR (borde top más visible) */
@@ -185,7 +187,6 @@
 .result-card {
   display: none;
   position: relative;
-  z-index: 1; 
 }
 
 .result-card.visible {
